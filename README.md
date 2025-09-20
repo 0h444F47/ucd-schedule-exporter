@@ -14,6 +14,6 @@ Another sustainable option is to create a bookmarklet where you can easily expor
 1. Create a new bookmark (right click the [bookmark bar](https://support.google.com/chrome/answer/188842?hl=en&co=GENIE.Platform%3DDesktop)) and click `Add Page...`.
 2. Give your bookmark a recognizable name and paste the following into the address section:
 ```js
-javascript: @TODO
+javascript: <copy over the content from "bookmarklet.js">
 ```
 3. Login to [UCD Schedule Builder](https://my.ucdavis.edu/schedulebuilder/index.cfm) and click the bookmark you just created to export calendar.
