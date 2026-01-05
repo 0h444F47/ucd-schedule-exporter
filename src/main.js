@@ -1,5 +1,5 @@
 const { courses: { course_list, term } } = require('./scraper.js');
-const { CalendarBuilder, CalendarEventBuilder } = require('./ical-generator.js');
+const { CalendarBuilder, CalendarEventBuilder } = require('./ics-generator.js');
 
 if (!window?.location?.href || !window.location.href.startsWith("https://my.ucdavis.edu/schedulebuilder/")) {
     alert("This bookmarklet only works on the UCD Schedule Builder page (https://my.ucdavis.edu/schedulebuilder/).");
