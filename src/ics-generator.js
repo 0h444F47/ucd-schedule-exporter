@@ -108,6 +108,10 @@ class CalendarEventBuilder {
     }
 
     build() {
+        // Adjust start time
+        if (this.#days){
+            this.#start_time = CalendarEventBuilder.findFirstMatchingWeekday(this.#start_time, this.#days);
+        }
         const relative_end_time = new Date(this.#start_time);
         const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
         relative_end_time.setHours(this.#end_time.getHours(), this.#end_time.getMinutes(), this.#end_time.getSeconds());
@@ -116,12 +120,11 @@ class CalendarEventBuilder {
             `SUMMARY:${this.#event_title}`,
             `DTSTAMP:${(new Date()).toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
             `UID:${crypto.randomUUID()}`,
-            `${this.#days ? `DTSTART;TZID=${tzid}:${CalendarEventBuilder.utcToLocalISOString(CalendarEventBuilder.findFirstMatchingWeekday(this.#start_time, this.#days).toISOString()).replace(/[-:]/g, '').split('.')[0]}`
-                : `DTSTART;TZID=${tzid}:${CalendarEventBuilder.utcToLocalISOString(this.#start_time).replace(/[-:]/g, '').split('.')[0]}`}`,
+            `DTSTART;TZID=${tzid}:${CalendarEventBuilder.utcToLocalISOString(this.#start_time.toISOString()).replace(/[-:]/g, '').split('.')[0]}`,
             `DTEND;TZID=${tzid}:${CalendarEventBuilder.utcToLocalISOString(relative_end_time.toISOString()).replace(/[-:]/g, '').split('.')[0]}`,
             `${this.#location ? `LOCATION:${this.#location}` : ''}`,
             `DESCRIPTION:${this.#description}`,
-            `${this.#days ? `RRULE:FREQ=WEEKLY;BYDAY=${this.#days.join(',')};UNTIL=${this.#end_time.toISOString().replace(/[-:]/g, '').split('.')[0]}Z` : ''}`,
+            `${this.#days ? `RRULE:FREQ=WEEKLY;BYDAY=${this.#days.join(',')};UNTIL=${CalendarEventBuilder.utcToLocalISOString(this.#end_time.toISOString()).replace(/[-:]/g, '').split('.')[0]}` : ''}`,
             'END:VEVENT'
         ].filter(line => line !== '')
             .join('\r\n');
